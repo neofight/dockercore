@@ -13,16 +13,11 @@ func main() {
 		log.Fatalf("failed to load solution: %v", err)
 	}
 
-	fmt.Printf("Solution: %v\n", solution.Path)
+	err = WriteDockerfile(solution)
 
-	for _, project := range solution.Projects {
-
-		if project.IsTestProject {
-			fmt.Printf("%v - Test Project\n", project.Path)
-		}
-
-		if project.IsStartupProject {
-			fmt.Printf("%v - Startup Project\n", project.Path)
-		}
+	if err != nil {
+		log.Fatalf("failed to write DockerFile: %v", err)
 	}
+
+	fmt.Println("Dockerfile successfully generated")
 }

@@ -17,9 +17,39 @@ type Project struct {
 	IsStartupProject bool
 }
 
+func (p Project) Dir() string {
+	return filepath.Dir(p.Path)
+}
+
+func (p Project) Name() string {
+	return strings.TrimSuffix(filepath.Base(p.Path), ".csproj")
+}
+
 type Solution struct {
 	Path     string
 	Projects []*Project
+}
+
+func (s Solution) TestProjects() (testProjects []*Project) {
+
+	for _, p := range s.Projects {
+		if p.IsTestProject {
+			testProjects = append(testProjects, p)
+		}
+	}
+
+	return
+}
+
+func (s Solution) StartupProjects() (startupProjects []*Project) {
+
+	for _, p := range s.Projects {
+		if p.IsStartupProject {
+			startupProjects = append(startupProjects, p)
+		}
+	}
+
+	return
 }
 
 type projectElement struct {
